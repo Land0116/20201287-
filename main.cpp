@@ -7,9 +7,9 @@ SDL_Window* g_pWindow = 0;
 SDL_Renderer* g_pRenderer = 0;
 
 int changeColor = 0; //랜덤색깔
-int startNum = 0;
+int startNum = 0; //입력 상호작용
 
-string gamestart;
+string gamestart; //시작 입력
 //보기 쉽게 const를 사용하였습니다
 const int Red_r = 255;
 const int Green_g = 255;
