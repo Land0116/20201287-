@@ -16,6 +16,7 @@ const int Green_g = 255;
 const int Blue_b = 255;
 
 bool g_bRunning = false;
+//g_bRunning는 게임 초기화하여 화면을 생성할 때 true가 되어 게임 루프를 사용할 수 있게 만들어주는 변수이며, false가 될 시 게임루프를 멈추게 한다.
 
 bool init(const char* title, int xpos, int ypos, int height, int width, int flags)
 {
