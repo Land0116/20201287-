@@ -14,7 +14,7 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
 			if (m_pRenderer != 0)
 			{
 				SDL_SetRenderDrawColor(m_pRenderer, 255, 0, 0, 0);
-
+        //[ 3주차 실습 (예외처리하기) ]
         if(pTempSurface != 0)
         {
           m_pTexture = SDL_CreateTextureFromSurface(m_pRenderer, pTempSurface);
@@ -53,6 +53,7 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
 
 void Game::update()
 {
+  
 }
 
 void Game::render()
@@ -76,10 +77,72 @@ void Game::handleEvents()
 		case SDL_QUIT:
 			m_bRunning = false;
 			break;
-	  }
+      // [ 3주차 실습 심화]
+    case SDL_KEYDOWN:
+    {
+		  switch (event.key.keysym.sym)
+      {
+        case SDLK_ESCAPE:
+          clean();
+          m_bRunning = false;
+          break;
+        case SDLK_w:
+        {
+          if(m_destinationRectangle.y != 0)
+          {
+            m_destinationRectangle.y -= 10;
+            break;
+          }
+          else
+          {
+            m_destinationRectangle.y = m_sourceRectangle.y = 0;
+            break;
+          }
+        }
+        case SDLK_s:
+        {
+          if(m_destinationRectangle.y != 290)
+          {
+            m_destinationRectangle.y += 10;
+            break;
+          }
+          else
+          {
+            m_destinationRectangle.y = 290;
+            break;
+          }
+        }
+        case SDLK_a:
+        {
+          if(m_destinationRectangle.x != 0)
+          {
+            m_destinationRectangle.x -= 10;
+            break;
+          }
+          else
+          {
+            m_destinationRectangle.x = m_sourceRectangle.x = 0;
+            break;
+          }
+        }
+        case SDLK_d:
+        {
+          if(m_destinationRectangle.x != 360)
+          {
+            m_destinationRectangle.x += 10;
+            break;
+          }
+          else
+          {
+            m_destinationRectangle.x = 360;
+            break;
+          }
+        }
+      }   
+		}
 		default:
 			break;
-		}
+    }
 	}
 }
 
