@@ -90,20 +90,44 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
 		return false;
 	}
 
+  m_iAnimalmove = false;
 	m_bRunning = true;
+  m_FlipConut = 0;
+  m_Flip_num = 0;
 	return true;
 }
 
 void Game::update()
 {
-  //[ 4주차 실습 - 애니메이션 스프라이트 ]
-  m_sourceRectangle.x = 128 * ((SDL_GetTicks() / 100) % 6);
+  //[ 4주차 실습 - 애니메이션 스프라이트 / 심화 이동시 애니메이션 재생]
+  if(m_iAnimalmove == true)
+  {
+    m_sourceRectangle.x = 128 * ((SDL_GetTicks() / 100) % 6);
+    m_iAnimalmove = false;
+  }
 }
 
 void Game::render()
 {
 	SDL_RenderClear(m_pRenderer);
-  SDL_RenderCopy(m_pRenderer, m_pTexture, &m_sourceRectangle, &m_destinationRectangle);
+  //[ 4주차 실습 심화 (이미지 회전))]
+  switch (m_FlipConut)
+  {
+  case 0:
+  case 1:
+    SDL_RenderCopy(m_pRenderer, m_pTexture, &m_sourceRectangle, &m_destinationRectangle);
+    break;
+  case 2:
+    SDL_RenderCopyEx(m_pRenderer, m_pTexture, &m_sourceRectangle, &m_destinationRectangle, 0, 0, SDL_FLIP_HORIZONTAL);
+    break;
+  case 3:
+    SDL_RenderCopyEx(m_pRenderer, m_pTexture, &m_sourceRectangle, &m_destinationRectangle, -90, 0, SDL_FLIP_VERTICAL);
+    break;
+  case 4:
+    SDL_RenderCopyEx(m_pRenderer, m_pTexture, &m_sourceRectangle, &m_destinationRectangle, 90, 0, SDL_FLIP_VERTICAL);
+    break;
+  }
+
 	SDL_RenderPresent(m_pRenderer);
 }
 
@@ -135,11 +159,13 @@ void Game::handleEvents()
           if(m_destinationRectangle.y != 0)
           {
             m_destinationRectangle.y -= 10;
+            m_iAnimalmove = true;
+            m_FlipConut = 3;
             break;
           }
           else
           {
-            m_destinationRectangle.y = m_sourceRectangle.y = 0;
+            m_destinationRectangle.y = 0;
             break;
           }
         }
@@ -148,6 +174,8 @@ void Game::handleEvents()
           if(m_destinationRectangle.y != 290)
           {
             m_destinationRectangle.y += 10;
+            m_iAnimalmove = true;
+            m_FlipConut = 4;
             break;
           }
           else
@@ -161,29 +189,34 @@ void Game::handleEvents()
           if(m_destinationRectangle.x != 0)
           {
             m_destinationRectangle.x -= 10;
+            m_iAnimalmove = true;
+            m_FlipConut = 2;
             break;
           }
           else
           {
-            m_destinationRectangle.x = m_sourceRectangle.x = 0;
+            m_destinationRectangle.x = 0;
             break;
           }
         }
         case SDLK_d:
         {
-          if(m_destinationRectangle.x != 360)
+          if(m_iAnimalmove == false)
           {
-            m_destinationRectangle.x += 10;
-            break;
-          }
-          else
-          {
-            m_destinationRectangle.x = 360;
-            break;
+            if(m_destinationRectangle.x != 360)
+            {
+              m_destinationRectangle.x += 10;
+              m_iAnimalmove = true;
+              m_FlipConut = 1;
+              break;
+            }
+            else
+            {
+              m_destinationRectangle.x = 360;
+              break;
+            }
           }
         }
-        default:
-			    break;
       }   
 		}
 		default:

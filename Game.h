@@ -21,4 +21,6 @@ private:
 	SDL_Rect m_destinationRectangle;
   SDL_Event event;
 	bool m_bRunning;
+  bool m_iAnimalmove;
+  int m_FlipConut;
 };
