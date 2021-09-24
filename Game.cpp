@@ -1,10 +1,14 @@
 #include "Game.h"
+#include "SDL_image.h"
 
 bool Game::init(const char* title, int xpos, int ypos, int width, int height, int flags)
 {
   //SDL_Surface* pTempSurface = SDL_LoadBMP("Assets/rider.bmp");
   //[ 4주차 실습 - 애니메이션 스프라이트 ]
-  SDL_Surface* pTempSurface = SDL_LoadBMP("Assets/animate.bmp");
+  //SDL_Surface* pTempSurface = SDL_LoadBMP("Assets/animate.bmp");
+  //[ 4주차 실습 - SDL_image]
+  //SDL_Surface* pTempSurface = IMG_Load("Assets/animate.png");
+  SDL_Surface* pTempSurface = IMG_Load("Assets/animate-alpha.png");
 	if (SDL_Init(SDL_INIT_EVERYTHING) >= 0)
 	{
 		m_pWindow = SDL_CreateWindow(title, xpos, ypos, height, width, flags);
@@ -28,27 +32,27 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
           m_sourceRectangle.x = 0;
           m_sourceRectangle.y = 0;
 
-        /* [4주차 응용 실습 - 1]
+        /*[4주차 응용 실습 - 1]
           m_destinationRectangle.w = m_sourceRectangle.w = 50;
-          m_destinationRectangle.h = m_sourceRectangle.h = 50;*/
-
-        //[ 4주차 응용 실습 - 2]
-        /*m_destinationRectangle.w = m_sourceRectangle.w = 50;
           m_destinationRectangle.h = m_sourceRectangle.h = 50;
 
-          m_destinationRectangle.x = 170;            m_destinationRectangle.y = 130;*/
-        //[ 4주차 응용 실습 - 3]
-        /*m_sourceRectangle.x = 51;
+          [ 4주차 응용 실습 - 2]
+          m_destinationRectangle.w = m_sourceRectangle.w = 50;
+          m_destinationRectangle.h = m_sourceRectangle.h = 50;
+
+          m_destinationRectangle.x = 170;            m_destinationRectangle.y = 130;
+          [ 4주차 응용 실습 - 3]
+          m_sourceRectangle.x = 51;
           m_sourceRectangle.y = 50;
 
           m_destinationRectangle.w = m_sourceRectangle.w = 50;
           m_destinationRectangle.h = m_sourceRectangle.h = 50;
 
           m_destinationRectangle.x = 160;
-          m_destinationRectangle.y = 130;*/
+          m_destinationRectangle.y = 130;
 
-        //[ 4주차 응용 실습 - 4]
-        /*m_destinationRectangle.w = m_sourceRectangle.w = 480;
+          [ 4주차 응용 실습 - 4]
+          m_destinationRectangle.w = m_sourceRectangle.w = 480;
           m_destinationRectangle.h = m_sourceRectangle.h = 640;
 
           m_destinationRectangle.x = 0;
