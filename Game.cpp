@@ -93,7 +93,6 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
   m_iAnimalmove = false;
 	m_bRunning = true;
   m_FlipConut = 0;
-  m_Flip_num = 0;
 	return true;
 }
 
@@ -103,7 +102,7 @@ void Game::update()
   if(m_iAnimalmove == true)
   {
     m_sourceRectangle.x = 128 * ((SDL_GetTicks() / 100) % 6);
-    m_iAnimalmove = false;
+    //m_iAnimalmove = false;
   }
 }
 
@@ -138,70 +137,68 @@ bool Game::running()
 
 void Game::handleEvents()
 {
-	if (SDL_PollEvent(&event))
+	if (SDL_PollEvent(&event) != 0)
 	{
 		switch (event.type)
 		{
-		case SDL_QUIT:
-			m_bRunning = false;
-			break;
-      // [ 3주차 실습 심화]
-    case SDL_KEYDOWN:
-    {
-		  switch (event.key.keysym.sym)
+		  case SDL_QUIT:
+			  m_bRunning = false;
+			  break;
+        // [ 3주차 실습 심화]
+      case SDL_KEYDOWN:
       {
-        case SDLK_ESCAPE:
-          clean();
-          m_bRunning = false;
-          break;
-        case SDLK_w:
+		    switch (event.key.keysym.sym)
         {
-          if(m_destinationRectangle.y != 0)
-          {
-            m_destinationRectangle.y -= 10;
-            m_iAnimalmove = true;
-            m_FlipConut = 3;
+          case SDLK_ESCAPE:
+            clean();
+            m_bRunning = false;
             break;
-          }
-          else
+          case SDLK_w:
           {
-            m_destinationRectangle.y = 0;
-            break;
+            if(m_destinationRectangle.y != 0)
+            {
+              m_destinationRectangle.y -= 10;
+              m_iAnimalmove = true;
+              m_FlipConut = 3;
+              break;
+            }
+            else
+            {
+              m_destinationRectangle.y = 0;
+              break;
+            }
           }
-        }
-        case SDLK_s:
-        {
-          if(m_destinationRectangle.y != 290)
+          case SDLK_s:
           {
-            m_destinationRectangle.y += 10;
-            m_iAnimalmove = true;
-            m_FlipConut = 4;
-            break;
+            if(m_destinationRectangle.y != 290)
+            {
+              m_destinationRectangle.y += 10;
+              m_iAnimalmove = true;
+              m_FlipConut = 4;
+              break;
+            }
+            else
+            {
+              m_destinationRectangle.y = 290;
+              break;
+            }
           }
-          else
+          case SDLK_a:
           {
-            m_destinationRectangle.y = 290;
-            break;
+            if(m_destinationRectangle.x != 0)
+            {
+              m_destinationRectangle.x -= 10;
+              m_iAnimalmove = true;
+              m_FlipConut = 2;
+              break;
+            }
+            else
+            {
+              m_destinationRectangle.x = 0;
+              break;
+            }
           }
-        }
-        case SDLK_a:
-        {
-          if(m_destinationRectangle.x != 0)
-          {
-            m_destinationRectangle.x -= 10;
-            m_iAnimalmove = true;
-            m_FlipConut = 2;
-            break;
-          }
-          else
-          {
-            m_destinationRectangle.x = 0;
-            break;
-          }
-        }
-        case SDLK_d:
-        {
-          if(m_iAnimalmove == false)
+          case SDLK_d:
           {
             if(m_destinationRectangle.x != 360)
             {
@@ -217,10 +214,22 @@ void Game::handleEvents()
             }
           }
         }
-      }   
-		}
-		default:
-			break;
+        break;
+      }
+      case SDL_KEYUP:
+        {
+		    switch (event.key.keysym.sym)
+          {
+          case SDLK_w:
+          case SDLK_s:
+          case SDLK_a:
+          case SDLK_d:
+            m_iAnimalmove = false;
+            break;
+          }
+        }
+      default:
+		    break;
     }
 	}
 }
