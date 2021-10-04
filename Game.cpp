@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "TextureManager.h"
 #include "SDL_image.h"
 
 bool Game::init(const char* title, int xpos, int ypos, int width, int height, int flags)
@@ -8,7 +9,9 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
   //SDL_Surface* pTempSurface = SDL_LoadBMP("Assets/animate.bmp");
   //[ 4주차 실습 - SDL_image]
   //SDL_Surface* pTempSurface = IMG_Load("Assets/animate.png");
-  SDL_Surface* pTempSurface = IMG_Load("Assets/animate-alpha.png");
+  //SDL_Surface* pTempSurface = IMG_Load("Assets/animate-alpha.png");
+  //[5주차 실습 - TextureManager]
+  m_textureManager.load("Assets/animate-alpha.png", "animate", m_pRenderer);
 	if (SDL_Init(SDL_INIT_EVERYTHING) >= 0)
 	{
 		m_pWindow = SDL_CreateWindow(title, xpos, ypos, height, width, flags);
@@ -101,7 +104,8 @@ void Game::update()
   //[ 4주차 실습 - 애니메이션 스프라이트 / 심화 이동시 애니메이션 재생]
   if(m_iAnimalmove == true)
   {
-    m_sourceRectangle.x = 128 * ((SDL_GetTicks() / 100) % 6);
+    m_currentFrame = ( (SDL_GetTicks() / 100) % 6);
+    //m_sourceRectangle.x = 128 * ((SDL_GetTicks() / 100) % 6);
     //m_iAnimalmove = false;
   }
 }
@@ -217,17 +221,17 @@ void Game::handleEvents()
         break;
       }
       case SDL_KEYUP:
-        {
+      {
 		    switch (event.key.keysym.sym)
-          {
+        {
           case SDLK_w:
           case SDLK_s:
           case SDLK_a:
           case SDLK_d:
             m_iAnimalmove = false;
             break;
-          }
         }
+      }
       default:
 		    break;
     }
