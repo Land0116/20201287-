@@ -8,7 +8,12 @@ using namespace std;
 
 class TextureManager {
   public:
-    TextureManager() {}
+    static TextureManager* Instance()
+    {
+      if(s_pInstance == 0)
+        s_pInstance = new TextureManager();
+      return s_pInstance;
+    }
     ~TextureManager() {}
 
     bool load(string fileName, string id, SDL_Renderer* pRenderer);
@@ -19,7 +24,11 @@ class TextureManager {
     int currentFrame, SDL_Renderer* pRenderer, SDL_RendererFlip flip = SDL_FLIP_NONE);
 
   private:
+    TextureManager() {}
     map<string, SDL_Texture*> m_textureMap;
+
+    static TextureManager* s_pInstance;
 };
+typedef TextureManager TheTextureManager;
 
 #endif
