@@ -1,21 +1,34 @@
 #include "Game.h"
 
+enum pMove PlayerMove;
+
 bool Game::init(const char* title, int xpos, int ypos, int width, int height, int flags)
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING) >= 0)
 	{
 		m_pWindow = SDL_CreateWindow(title, xpos, ypos, height, width, flags);
-
 		if (m_pWindow != 0)
 		{
 			m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, 0);
 
 			if (m_pRenderer != 0)
+      {
 				SDL_SetRenderDrawColor(m_pRenderer, 255, 0, 0, 0);
-			else
-				return false;
         
-      m_textureManager.load("Assets/animate-alpha.png", "animate", m_pRenderer);
+        /*if(!TheTextureManager::Instance()->load("Assets/animate-alpha.png", "animate", m_pRenderer))
+        {
+          return false;
+        }*/
+        if(!TheTextureManager::Instance()->load("Assets/pngwing.png", "Player", m_pRenderer))
+        {
+          return false;
+        }
+      }
+			else
+      {
+				return false;
+      }
+        
 		}
 		else
 		{
@@ -37,17 +50,14 @@ void Game::update()
   //[ 4주차 실습 - 애니메이션 스프라이트 / 심화 이동시 애니메이션 재생]
   if(m_iAnimalmove == true)
   {
-    m_currentFrame = ( (SDL_GetTicks() / 100) % 6);
-    //m_sourceRectangle.x = 128 * ((SDL_GetTicks() / 100) % 6);
-    //m_iAnimalmove = false;
+    m_currentFrame = ( (SDL_GetTicks() / 100) % 7);
   }
 }
 
 void Game::render()
 {
 	SDL_RenderClear(m_pRenderer);
-  m_textureManager.draw("animate", 0, 0, 128, 82, m_pRenderer);
-  m_textureManager.drawFrame("animate", m_AposX, m_AposY, 128, 82, 0, m_currentFrame, m_pRenderer, m_Aflip);
+  TheTextureManager::Instance()->drawFrame("Player", m_AposX, m_AposY, 150, 120, PlayerMove, m_currentFrame, m_pRenderer);
 	SDL_RenderPresent(m_pRenderer);
 }
 
@@ -79,6 +89,7 @@ void Game::handleEvents()
             if(m_AposY != 0)
             {
               m_AposY -= 10;
+              PlayerMove = Up;
               m_iAnimalmove = true;
               break;
             }
@@ -90,15 +101,16 @@ void Game::handleEvents()
           }
           case SDLK_s:
           {
-            if(m_AposY != 290)
+            if(m_AposY != 250)
             {
               m_AposY += 10;
+              PlayerMove = Down;
               m_iAnimalmove = true;
               break;
             }
             else
             {
-              m_AposY = 290;
+              m_AposY = 250;
               break;
             }
           }
@@ -107,7 +119,7 @@ void Game::handleEvents()
             if(m_AposX != 0)
             {
               m_AposX -= 10;
-              m_Aflip = SDL_FLIP_HORIZONTAL;
+             PlayerMove = Left;
               m_iAnimalmove = true;
               break;
             }
@@ -122,7 +134,7 @@ void Game::handleEvents()
             if(m_AposX != 360)
             {
               m_AposX += 10;
-              m_Aflip = SDL_FLIP_NONE;
+              PlayerMove = Right;
               m_iAnimalmove = true;
               break;
             }

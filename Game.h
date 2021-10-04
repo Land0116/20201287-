@@ -5,10 +5,18 @@
 #include "SDL_image.h"
 #include "TextureManager.h"
 
+enum pMove
+{
+  Down = 0,
+  Up,
+  Left,
+  Right
+};
+
 class Game
 {
 public:
-	Game() { m_AposX = 100; m_AposY = 100; m_Aflip = SDL_FLIP_NONE;}
+	Game() { m_AposX = 0; m_AposY = 0; m_Aflip = SDL_FLIP_NONE;}
 	~Game() {}
 
 	bool init(const char* title, int xpos, int ypos, int width, int height, int flags);
@@ -25,8 +33,6 @@ private:
 	SDL_Rect m_sourceRectangle;
 	SDL_Rect m_destinationRectangle;*/
   SDL_Event event;
-
-  TextureManager m_textureManager;
 
 	bool m_bRunning;
   bool m_iAnimalmove;
