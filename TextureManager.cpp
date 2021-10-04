@@ -7,7 +7,7 @@ bool TextureManager::load(string fileName, string id, SDL_Renderer* pRenderer)
   {
     return false;
   }
-  SDL_Texture* pTexture = SDL_CreateTextureFromSurface(m_pRenderer, pTempSurface);
+  SDL_Texture* pTexture = SDL_CreateTextureFromSurface(pRenderer, pTempSurface);
   SDL_FreeSurface(pTempSurface);
   if(pTexture != 0)
   {
@@ -17,7 +17,7 @@ bool TextureManager::load(string fileName, string id, SDL_Renderer* pRenderer)
   return false;
 }
 
-void TextureManager::draw(string id, int x, int y, int width, int height, SDL_Renderer* pRenderer, SDL_RendererFlip flip = SDL_FLIP_NONE)
+void TextureManager::draw(string id, int x, int y, int width, int height, SDL_Renderer* pRenderer, SDL_RendererFlip flip)
 {
   SDL_Rect srcRect; //원본상자
   SDL_Rect destRect; // 대상상자
@@ -29,10 +29,10 @@ void TextureManager::draw(string id, int x, int y, int width, int height, SDL_Re
   destRect.x = x;
   destRect.y = y;
 
-  SDL_RenderCopyEx(pRenderer, textureMap[id], &srcRect, &destRect, 0, 0, flip);
+  SDL_RenderCopyEx(pRenderer, m_textureMap[id], &srcRect, &destRect, 0, 0, flip);
 }
 
-void TextureManager::drawFrame(string id, int x, int y, int width, int height, int currentRow, int currentFrame, SDL_Renderer* pRenderer, SDL_RendererFlip flip = SDL_FLIP_NONE)
+void TextureManager::drawFrame(string id, int x, int y, int width, int height, int currentRow, int currentFrame, SDL_Renderer* pRenderer, SDL_RendererFlip flip)
 {
   SDL_Rect srcRect; //원본상자
   SDL_Rect destRect; // 대상상자
@@ -44,5 +44,5 @@ void TextureManager::drawFrame(string id, int x, int y, int width, int height, i
   destRect.x = x;
   destRect.y = y;
 
-  SDL_RenderCopyEx(pRenderer, textureMap[id], &srcRect, &destRect, 0, 0, flip);
+  SDL_RenderCopyEx(pRenderer, m_textureMap[id], &srcRect, &destRect, 0, 0, flip);
 }

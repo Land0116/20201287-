@@ -1,17 +1,7 @@
 #include "Game.h"
-#include "TextureManager.h"
-#include "SDL_image.h"
 
 bool Game::init(const char* title, int xpos, int ypos, int width, int height, int flags)
 {
-  //SDL_Surface* pTempSurface = SDL_LoadBMP("Assets/rider.bmp");
-  //[ 4주차 실습 - 애니메이션 스프라이트 ]
-  //SDL_Surface* pTempSurface = SDL_LoadBMP("Assets/animate.bmp");
-  //[ 4주차 실습 - SDL_image]
-  //SDL_Surface* pTempSurface = IMG_Load("Assets/animate.png");
-  //SDL_Surface* pTempSurface = IMG_Load("Assets/animate-alpha.png");
-  //[5주차 실습 - TextureManager]
-  m_textureManager.load("Assets/animate-alpha.png", "animate", m_pRenderer);
 	if (SDL_Init(SDL_INIT_EVERYTHING) >= 0)
 	{
 		m_pWindow = SDL_CreateWindow(title, xpos, ypos, height, width, flags);
@@ -21,67 +11,11 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
 			m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, 0);
 
 			if (m_pRenderer != 0)
-			{
 				SDL_SetRenderDrawColor(m_pRenderer, 255, 0, 0, 0);
-        //[ 3주차 실습 (예외처리하기) ]
-        if(pTempSurface != 0)
-        {
-          m_pTexture = SDL_CreateTextureFromSurface(m_pRenderer, pTempSurface);
-          SDL_FreeSurface(pTempSurface);
-          //SDL_QueryTexture(m_pTexture, NULL, NULL, &m_sourceRectangle.w, &m_sourceRectangle.h);
-          //[ 4주차 실습 - 애니메이션 스프라이트 ]
-          m_sourceRectangle.w = 128;
-          m_sourceRectangle.h = 82;
-          m_sourceRectangle.x = 0;
-          m_sourceRectangle.y = 0;
-
-        /*[4주차 응용 실습 - 1]
-          m_destinationRectangle.w = m_sourceRectangle.w = 50;
-          m_destinationRectangle.h = m_sourceRectangle.h = 50;
-
-          [ 4주차 응용 실습 - 2]
-          m_destinationRectangle.w = m_sourceRectangle.w = 50;
-          m_destinationRectangle.h = m_sourceRectangle.h = 50;
-
-          m_destinationRectangle.x = 170;            m_destinationRectangle.y = 130;
-          [ 4주차 응용 실습 - 3]
-          m_sourceRectangle.x = 51;
-          m_sourceRectangle.y = 50;
-
-          m_destinationRectangle.w = m_sourceRectangle.w = 50;
-          m_destinationRectangle.h = m_sourceRectangle.h = 50;
-
-          m_destinationRectangle.x = 160;
-          m_destinationRectangle.y = 130;
-
-          [ 4주차 응용 실습 - 4]
-          m_destinationRectangle.w = m_sourceRectangle.w = 480;
-          m_destinationRectangle.h = m_sourceRectangle.h = 640;
-
-          m_destinationRectangle.x = 0;
-          m_destinationRectangle.y = 0;*/
-
-
-          m_destinationRectangle.w = m_sourceRectangle.w;
-          m_destinationRectangle.h = m_sourceRectangle.h;
-
-          m_destinationRectangle.x = 0;
-          m_destinationRectangle.y = 0;
-
-
-          /*m_destinationRectangle.x = m_sourceRectangle.x = 0;
-          m_destinationRectangle.y = m_sourceRectangle.y = 0;*/
-
-        }
-        else
-        {
-          return false;
-        }
-			}
 			else
-			{
 				return false;
-			}
+        
+      m_textureManager.load("Assets/animate-alpha.png", "animate", m_pRenderer);
 		}
 		else
 		{
@@ -95,7 +29,6 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
 
   m_iAnimalmove = false;
 	m_bRunning = true;
-  m_FlipConut = 0;
 	return true;
 }
 
@@ -113,24 +46,8 @@ void Game::update()
 void Game::render()
 {
 	SDL_RenderClear(m_pRenderer);
-  //[ 4주차 실습 심화 (이미지 회전))]
-  switch (m_FlipConut)
-  {
-  case 0:
-  case 1:
-    SDL_RenderCopy(m_pRenderer, m_pTexture, &m_sourceRectangle, &m_destinationRectangle);
-    break;
-  case 2:
-    SDL_RenderCopyEx(m_pRenderer, m_pTexture, &m_sourceRectangle, &m_destinationRectangle, 0, 0, SDL_FLIP_HORIZONTAL);
-    break;
-  case 3:
-    SDL_RenderCopyEx(m_pRenderer, m_pTexture, &m_sourceRectangle, &m_destinationRectangle, -90, 0, SDL_FLIP_VERTICAL);
-    break;
-  case 4:
-    SDL_RenderCopyEx(m_pRenderer, m_pTexture, &m_sourceRectangle, &m_destinationRectangle, 90, 0, SDL_FLIP_VERTICAL);
-    break;
-  }
-
+  m_textureManager.draw("animate", 0, 0, 128, 82, m_pRenderer);
+  m_textureManager.drawFrame("animate", m_AposX, m_AposY, 128, 82, 0, m_currentFrame, m_pRenderer, m_Aflip);
 	SDL_RenderPresent(m_pRenderer);
 }
 
@@ -159,61 +76,59 @@ void Game::handleEvents()
             break;
           case SDLK_w:
           {
-            if(m_destinationRectangle.y != 0)
+            if(m_AposY != 0)
             {
-              m_destinationRectangle.y -= 10;
+              m_AposY -= 10;
               m_iAnimalmove = true;
-              m_FlipConut = 3;
               break;
             }
             else
             {
-              m_destinationRectangle.y = 0;
+              m_AposY = 0;
               break;
             }
           }
           case SDLK_s:
           {
-            if(m_destinationRectangle.y != 290)
+            if(m_AposY != 290)
             {
-              m_destinationRectangle.y += 10;
+              m_AposY += 10;
               m_iAnimalmove = true;
-              m_FlipConut = 4;
               break;
             }
             else
             {
-              m_destinationRectangle.y = 290;
+              m_AposY = 290;
               break;
             }
           }
           case SDLK_a:
           {
-            if(m_destinationRectangle.x != 0)
+            if(m_AposX != 0)
             {
-              m_destinationRectangle.x -= 10;
+              m_AposX -= 10;
+              m_Aflip = SDL_FLIP_HORIZONTAL;
               m_iAnimalmove = true;
-              m_FlipConut = 2;
               break;
             }
             else
             {
-              m_destinationRectangle.x = 0;
+              m_AposX = 0;
               break;
             }
           }
           case SDLK_d:
           {
-            if(m_destinationRectangle.x != 360)
+            if(m_AposX != 360)
             {
-              m_destinationRectangle.x += 10;
+              m_AposX += 10;
+              m_Aflip = SDL_FLIP_NONE;
               m_iAnimalmove = true;
-              m_FlipConut = 1;
               break;
             }
             else
             {
-              m_destinationRectangle.x = 360;
+              m_AposX = 360;
               break;
             }
           }

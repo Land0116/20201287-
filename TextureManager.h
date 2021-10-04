@@ -1,4 +1,8 @@
+#ifndef TextureManager_H
+#define TextureManager_H
+
 #include "SDL.h"
+#include "SDL_image.h"
 #include <map>
 using namespace std;
 
@@ -16,4 +20,6 @@ class TextureManager {
 
   private:
     map<string, SDL_Texture*> m_textureMap;
-}
+};
+
+#endif
