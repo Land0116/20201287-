@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Game.h"
 
 enum pMove PlayerMove;
@@ -22,6 +23,10 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
         {
           return false;
         }
+        if(!TheTextureManager::Instance()->load("Assets/pngwing.png", "player", m_pRenderer))
+        {
+          return false;
+        }
       }
 			else
       {
@@ -43,7 +48,7 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
 	m_bRunning = true;
 
   m_go->load(100, 100, 128, 82, "animate");
-  m_player->load(300, 300, 128, 82, "animate");
+  m_player->load(300, 300, 150, 120, "player");
   m_gameObjects.push_back(m_go);
   m_gameObjects.push_back(m_player);
 	return true;
