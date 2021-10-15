@@ -5,6 +5,9 @@
 #include "TextureManager.h"
 #include "GameObject.h"
 #include "Player.h"
+#include "vector"
+
+using namespace std;
 
 
 enum pMove
@@ -37,8 +40,6 @@ private:
 	SDL_Rect m_destinationRectangle;*/
   SDL_Event event;
   
-  GameObject m_go;
-  Player m_player;
 
 	bool m_bRunning;
   bool m_iAnimalmove;
@@ -47,6 +48,8 @@ private:
   SDL_RendererFlip m_Aflip;
   int m_AposX;
   int m_AposY;
+
+  vector<GameObject*> m_gameObjects;
 
 };
 
