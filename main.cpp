@@ -1,4 +1,4 @@
-//완료된 실습 - 상속
+//완료된 실습 - 다형성
 #include "Game.h"
 Game* g_game = 0;
 
