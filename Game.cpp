@@ -6,7 +6,7 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING) >= 0)
 	{
-		m_pWindow = SDL_CreateWindow(title, xpos, ypos, height, width, flags);
+		m_pWindow = SDL_CreateWindow(title, xpos, ypos, width, height, flags);
 		if (m_pWindow != 0)
 		{
 			m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, 0);
@@ -15,14 +15,14 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
       {
 				SDL_SetRenderDrawColor(m_pRenderer, 255, 0, 0, 0);
         
-        /*if(!TheTextureManager::Instance()->load("Assets/animate-alpha.png", "animate", m_pRenderer))
+        if(!TheTextureManager::Instance()->load("Assets/animate-alpha.png", "animate", m_pRenderer))
         {
-          return false;
-        }*/
-        if(!TheTextureManager::Instance()->load("Assets/pngwing.png", "Player", m_pRenderer))
-        {
-          return false;
-        }
+           return false;
+         }
+        //  if(!TheTextureManager::Instance()->load("Assets/pngwing.png", "Player", m_pRenderer))
+        // {
+        //   return false;
+        // }
       }
 			else
       {
@@ -42,11 +42,16 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
 
   m_iAnimalmove = false;
 	m_bRunning = true;
+
+  m_go.load(100, 100, 128, 82, "animate");
+  m_player.load(300, 300, 128, 82, "animate");
 	return true;
 }
 
 void Game::update()
 {
+  m_go.update();
+  m_player.update();
   //[ 4주차 실습 - 애니메이션 스프라이트 / 심화 이동시 애니메이션 재생]
   if(m_iAnimalmove == true)
   {
@@ -57,7 +62,10 @@ void Game::update()
 void Game::render()
 {
 	SDL_RenderClear(m_pRenderer);
-  TheTextureManager::Instance()->drawFrame("Player", m_AposX, m_AposY, 150, 120, PlayerMove, m_currentFrame, m_pRenderer);
+  
+  m_go.draw(m_pRenderer);
+  m_player.draw(m_pRenderer);
+
 	SDL_RenderPresent(m_pRenderer);
 }
 
