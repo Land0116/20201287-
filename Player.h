@@ -1,20 +1,19 @@
 #ifndef Player_H
 #define Player_H
 
-#include "GameObject.h"
+#include "SDLGameObject.h"
 
-class Player : public GameObject
+class Player : public SDLGameObject
 {
   public :
-    Player() {}
+    Player(const LoaderParams* pParams);
+    
+    //void load(int x, int y, int width, int height, string textureID);
+    
+    virtual void draw();
+    virtual void update();
+    virtual void clean();
     ~Player() {}
-    
-    void load(int x, int y, int width, int height, string textureID);
-    
-    void draw(SDL_Renderer* pRenderer);
-    void update();
-
-    void clean();
 };
 
 #endif
