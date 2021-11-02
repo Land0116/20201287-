@@ -1,4 +1,4 @@
-//완료된 실습 - 추상클래스 + 유일객체 Game
+//완료된 실습 - Vector2D
 #include "Game.h"
 
 int main(int argc, char* argv[])

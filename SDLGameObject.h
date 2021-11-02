@@ -4,6 +4,7 @@
 #include "Game.h"
 #include "GameObject.h"
 #include "TextureManager.h"
+#include "Vector2D.h"
 
 using namespace std;
 
@@ -25,6 +26,8 @@ class SDLGameObject : public GameObject
     int m_currentRow;
     int m_currentFrame;
     string m_textureID;
+
+    Vector2D m_posion;
 };
 
 #endif
