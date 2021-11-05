@@ -1,4 +1,4 @@
-//완료된 실습 - 물리
+//완료된 실습 - 키 입력
 #include "Game.h"
 
 const int FPS = 60;
