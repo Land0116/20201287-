@@ -28,6 +28,8 @@ class SDLGameObject : public GameObject
     string m_textureID;
 
     Vector2D m_posion;
+    Vector2D m_velocity; //속도
+    Vector2D m_acceleration; //가속도
 };
 
 #endif
