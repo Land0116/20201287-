@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "InputHandler.h"
 #include "Player.h"
 #include "Enemy.h"
 
@@ -81,23 +82,13 @@ bool Game::running()
 
 void Game::handleEvents()
 {
-	if (SDL_PollEvent(&event) != 0)
-	{
-		switch (event.type)
-		{
-		  case SDL_QUIT:
-			  m_bRunning = false;
-			  break;
-        // [ 3주차 실습 심화]
-      default:
-		    break;
-    }
-	}
+	TheInputHandler::Instance()->update();
 }
 
 void Game::clean()
 {
-	SDL_DestroyWindow(m_pWindow);
-	SDL_DestroyRenderer(m_pRenderer);
-	SDL_Quit();
+  TheInputHandler::Instance()->clean();
+  SDL_DestroyWindow(m_pWindow); 
+  SDL_DestroyRenderer(m_pRenderer);
+  SDL_Quit();
 }
